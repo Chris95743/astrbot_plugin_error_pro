@@ -1,6 +1,7 @@
 # AstrBot Error Pro Plugin
 
-一个强大的AstrBot错误处理插件，可以智能拦截机器人的错误消息并发送通知给管理员。**新增AI错误解释功能**，用友好的语言替代冰冷的技术错误信息！
+一个强大的AstrBot错误处理插件，可以智能拦截机器人的错误消息并选择是否发送通知给管理员。**新增AI错误解释功能**，用友好的语言替代冰冷的技术错误信息！
+（感谢DragonEmpery大佬，此插件是基于原插件astrbot_plugin_error_notice的改良）
 
 ## 功能特性
 
@@ -29,7 +30,7 @@
 | 配置项 | 类型 | 默认值 | 说明 |
 |--------|------|--------|------|
 | `block_error_messages` | bool | true | 是否屏蔽错误信息（阻止发送给用户） |
-| `notify_admin` | bool | true | 是否将错误信息发送给管理员 |
+| `notify_admin` | bool | false | 是否将错误信息发送给管理员 |
 
 ### AI错误解释配置
 
@@ -41,7 +42,7 @@
 | `ai_model` | string | gpt-3.5-turbo | 使用的AI模型名称 |
 | `ai_prompt` | string | 请将以下技术错误信息转换为... | AI提示词模板 |
 | `ai_timeout` | int | 10 | AI调用超时时间（秒） |
-| `ai_max_tokens` | int | 100 | AI响应最大Token数 |
+| `ai_max_tokens` | int | 500 | AI响应最大Token数 |
 
 ## 使用场景
 
@@ -71,21 +72,15 @@
 ## 版本历史
 
 ### V1.1.0 （最新）
-- 🤖 **重大更新**：新增AI错误解释功能
+- **重大更新**：新增AI错误解释功能
 - 支持OpenAI兼容的API接口
 - 可配置AI模型、提示词和调用参数
 - 智能回退机制：AI调用失败时自动使用传统屏蔽模式
 - 用友好的AI解释替代冰冷的技术错误信息
 
-### V1.0.3
-- 增加错误识别词
-- 优化错误检测机制
-
-### V1.0.2
-- 现在可以识别出现错误的群聊或私聊的名称
-- 将群号或QQ号返回给管理员
-
-### V1.0.1
+### V1.0.0
+- **特别感谢**：此插件是基于https://github.com/DragonEmpery/astrbot_plugin_error_notice的改良。
+- 感谢DragonEmpery大佬，此插件只是站在巨人的肩膀上前进了一小步。
 - 初始版本
 - 基础错误拦截和管理员通知功能
 
