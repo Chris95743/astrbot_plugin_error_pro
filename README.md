@@ -79,7 +79,7 @@
 - 用友好的AI解释替代冰冷的技术错误信息
 
 ### V1.0.0
-- **特别感谢**：此插件是基于（https://github.com/DragonEmpery/astrbot_plugin_error_notice）的改良。
+- **特别感谢**：此插件是基于[GitHub]（https://github.com/DragonEmpery/astrbot_plugin_error_notice）的改良。
 - 感谢DragonEmpery大佬，此插件只是站在巨人的肩膀上前进了一小步。
 - 初始版本
 - 基础错误拦截和管理员通知功能
