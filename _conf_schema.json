@@ -1,0 +1,55 @@
+{
+    "block_error_messages": {
+        "description": "是否屏蔽错误信息（阻止发送给用户）",
+        "type": "bool",
+        "default": true
+    },
+    "notify_admin": {
+        "description": "是否将错误信息发送给管理员",
+        "type": "bool",
+        "default": false
+    },
+    "enable_ai_explanation": {
+        "description": "启用AI错误解释",
+        "type": "bool",  
+        "hint": "启用后会用AI生成友好的错误解释替代冰冷的技术错误信息",
+        "default": false
+    },
+    "ai_base_url": {
+        "description": "AI API基础URL",
+        "type": "string",
+        "hint": "OpenAI兼容的API基础URL，例如：https://api.openai.com/v1",
+        "default": "https://api.siliconflow.cn"
+    },
+    "ai_api_key": {
+        "description": "AI API密钥",
+        "type": "string", 
+        "hint": "用于调用AI服务的API密钥",
+        "obvious_hint": true,
+        "default": ""
+    },
+    "ai_model": {
+        "description": "AI模型名称",
+        "type": "string",
+        "hint": "使用的AI模型名称，例如：deepseek-ai/DeepSeek-V3",
+        "default": "deepseek-ai/DeepSeek-V3"
+    },
+    "ai_prompt": {
+        "description": "AI提示词模板",
+        "type": "string",
+        "hint": "用于生成友好错误解释的提示词，{error}会被替换为实际错误信息",
+        "default": "请将以下技术错误信息转换为普通用户能理解的友好提示，亲切一些，简洁明了，只解释错误，可以使用一些口语化的词语，称呼用户为主人：{error}"
+    },
+    "ai_timeout": {
+        "description": "AI调用超时时间（秒）",
+        "type": "int",
+        "hint": "AI服务调用的超时时间，超时后将使用原错误处理方式",
+        "default": 10
+    },
+    "ai_max_tokens": {
+        "description": "AI响应最大Token数",
+        "type": "int",
+        "hint": "AI生成响应的最大Token数量，控制响应长度",
+        "default": 500
+    }
+}
