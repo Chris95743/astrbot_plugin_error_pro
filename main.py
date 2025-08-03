@@ -26,9 +26,9 @@ class ErrorFilter(Star):
         self.ai_base_url = self.config.get('ai_base_url', 'https://api.openai.com/v1')
         self.ai_api_key = self.config.get('ai_api_key', '')
         self.ai_model = self.config.get('ai_model', 'gpt-3.5-turbo')
-        self.ai_prompt = self.config.get('ai_prompt', '请将以下技术错误信息转换为普通用户能理解的友好提示，保持简洁明了，不超过50字：{error}')
+        self.ai_prompt = self.config.get('ai_prompt', '用户{user_name}在{platform}的{chat_type}中说了："{user_message}"，但是出现了错误：{error}。请用亲切友好的语言先回答用户说的话，再简单的向用户解释出现了什么错误。称呼用户为主人，不要输出你的心理活动，同一报错的解释不要重复。')
         self.ai_timeout = self.config.get('ai_timeout', 10)
-        self.ai_max_tokens = self.config.get('ai_max_tokens', 100)
+        self.ai_max_tokens = self.config.get('ai_max_tokens', 500)
 
     async def _get_ai_explanation(self, error_message: str, event: AstrMessageEvent = None) -> str:
         """使用AI生成友好的错误解释"""
