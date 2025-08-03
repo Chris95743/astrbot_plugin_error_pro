@@ -10,7 +10,7 @@ from astrbot.api.provider import LLMResponse
 from openai.types.chat.chat_completion import ChatCompletion
 import traceback
 
-@register("error_pro", "Chris", "屏蔽机器人的错误信息回复，发送给管理员，支持AI友好解释。", "1.1.0")
+@register("astrbot_plugin_error_pro", "Chris", "屏蔽机器人的错误消息，选择是否发送给管理员，支持AI上下文感知的友好解释。", "1.2.0")
 class ErrorFilter(Star):
     def __init__(self, context: Context, config: dict):
         super().__init__(context)
@@ -30,14 +30,39 @@ class ErrorFilter(Star):
         self.ai_timeout = self.config.get('ai_timeout', 10)
         self.ai_max_tokens = self.config.get('ai_max_tokens', 100)
 
-    async def _get_ai_explanation(self, error_message: str) -> str:
+    async def _get_ai_explanation(self, error_message: str, event: AstrMessageEvent = None) -> str:
         """使用AI生成友好的错误解释"""
         if not self.enable_ai_explanation or not self.ai_api_key:
             return None
             
         try:
+            # 构建变量字典
+            variables = {
+                'error': error_message,
+                'user_message': '',
+                'user_name': '未知用户',
+                'platform': '未知平台',
+                'chat_type': '未知'
+            }
+            
+            # 如果有event对象，提取用户信息
+            if event:
+                try:
+                    variables['user_message'] = event.get_message_str() or ''
+                    variables['user_name'] = event.get_sender_name() or '未知用户'
+                    variables['platform'] = event.get_platform_name() or '未知平台'
+                    
+                    # 判断聊天类型
+                    if event.message_obj and event.message_obj.group_id:
+                        variables['chat_type'] = '群聊'
+                    else:
+                        variables['chat_type'] = '私聊'
+                        
+                except Exception as e:
+                    logger.warning(f"获取用户信息失败: {e}")
+            
             # 构建请求数据
-            prompt = self.ai_prompt.format(error=error_message)
+            prompt = self.ai_prompt.format(**variables)
             
             headers = {
                 'Authorization': f'Bearer {self.ai_api_key}',
@@ -98,7 +123,7 @@ class ErrorFilter(Star):
                 # 尝试AI解释错误（如果启用）
                 ai_explanation = None
                 if self.enable_ai_explanation:
-                    ai_explanation = await self._get_ai_explanation(message_str)
+                    ai_explanation = await self._get_ai_explanation(message_str, event)
                 
                 # 屏蔽原错误消息
                 if self.block_error_messages:
