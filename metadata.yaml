@@ -1,5 +1,5 @@
-name: error_pro # 这是你的插件的唯一识别名。
-desc: 屏蔽机器人的错误消息，发送给管理员，支持AI友好解释。 # 插件简短描述
+name: astrbot_plugin_error_pro # 这是你的插件的唯一识别名。
+desc: 屏蔽机器人的错误消息，选择是否发送给管理员，支持AI友好解释。 # 插件简短描述
 help: 无 # 插件的帮助信息
 version: v1.1.0 # 插件版本号
 author: Chris # 作者
