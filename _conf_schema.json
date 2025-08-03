@@ -12,7 +12,7 @@
     "enable_ai_explanation": {
         "description": "启用AI错误解释",
         "type": "bool",  
-        "hint": "启用后会用AI生成友好的错误解释替代冰冷的技术错误信息",
+        "hint": "启用后会调用AI生成上下文感知的友好错误解释，替代冰冷的错误信息",
         "default": false
     },
     "ai_base_url": {
@@ -37,8 +37,8 @@
     "ai_prompt": {
         "description": "AI提示词模板",
         "type": "string",
-        "hint": "用于生成友好错误解释的提示词，{error}会被替换为实际错误信息",
-        "default": "请将以下技术错误信息转换为普通用户能理解的友好提示，亲切一些，简洁明了，只解释错误，可以使用一些口语化的词语，称呼用户为主人，同一报错的解释避免重复，禁止描述你的心理活动：{error}"
+        "hint": "支持变量：{error}错误信息，{user_message}用户消息，{user_name}用户名称，{platform}平台名称，{chat_type}聊天类型",
+        "default": "用户{user_name}在{platform}的{chat_type}中说了：\"{user_message}\"，但是出现了错误：{error}。请用亲切友好的语言先回答用户说的话，再简单的向用户解释出现了什么错误。称呼用户为主人，不要输出你的心理活动，同一报错的解释不要重复。"
     },
     "ai_timeout": {
         "description": "AI调用超时时间（秒）",
