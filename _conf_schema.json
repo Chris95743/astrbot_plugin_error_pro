@@ -51,5 +51,43 @@
         "type": "int",
         "hint": "AI生成响应的最大Token数量，控制响应长度",
         "default": 500
+    },
+    "block_ai_explanation_and_send_admin": {
+        "description": "屏蔽AI生成的错误解释并发送给管理员",
+        "type": "bool",
+        "hint": "开启后当AI生成了解释时，不再发送给用户，而是只发给管理员。",
+        "default": false
+    },
+    "switch_on_keyword_enable": {
+        "description": "开启关键词触发的临时切换Provider",
+        "type": "bool",
+        "default": false
+    },
+    "switch_keywords": {
+        "description": "触发切换的关键词(逗号分隔)",
+        "type": "string",
+        "hint": "例如：\"切换高质量, 使用OpenAI\"",
+        "default": ""
+    },
+    "switch_provider_id": {
+        "description": "触发后切换到的Provider ID",
+        "type": "string",
+        "hint": "需与已启用的提供商ID一致",
+        "default": ""
+    },
+    "switch_revert_seconds": {
+        "description": "延时切回的秒数，-1 表示不切回",
+        "type": "int",
+        "default": -1
+    },
+    "switch_block_message": {
+        "description": "触发时是否拦截当次输出",
+        "type": "bool",
+        "default": true
+    },
+    "switch_retry_reply_enable": {
+        "description": "切换后立即用新Provider重试并回复原始用户消息",
+        "type": "bool",
+        "default": true
     }
 }
