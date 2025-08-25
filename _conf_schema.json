@@ -58,16 +58,50 @@
         "hint": "开启后当AI生成了解释时，不再发送给用户，而是只发给管理员。",
         "default": false
     },
-    "switch_on_keyword_enable": {
-        "description": "开启关键词触发的临时切换Provider",
+    "retry_enable": {
+        "description": "启用简化重试（先在当前Provider上重试，失败后再考虑切换）",
         "type": "bool",
         "default": false
     },
-    "switch_keywords": {
-        "description": "触发切换的关键词(逗号分隔)",
+    "retry_max_attempts": {
+        "description": "简化重试的最大次数（同一Provider）",
+        "type": "int",
+        "default": 2
+    },
+    "retry_delay": {
+        "description": "简化重试的间隔（秒），采用指数退避，上限30秒",
+        "type": "int",
+        "default": 2
+    },
+    "retry_error_keywords": {
+        "description": "触发简化重试的错误关键词",
         "type": "string",
-        "hint": "例如：\"切换高质量, 使用OpenAI\"",
+        "invisible": true,
         "default": ""
+    },
+    "retry_error_keywords_list": {
+        "description": "触发简化重试的错误关键词列表",
+        "type": "list",
+        "hint": "每个元素为一个关键词，采用包含匹配（不区分大小写）",
+        "default": ["错误类型"]
+    },
+    "retry_fail_message": {
+        "description": "重试全部失败后的用户提示",
+        "type": "string",
+        "hint": "当简化重试全部失败且未触发临时切换时，给用户的一句友好提示，留空则不回复",
+        "default": "抱歉，我已尝试重试但仍未成功，请稍后再试。最后一次重试错误: {last_error_info}"
+    },
+    "block_retry_fail_and_send_admin": {
+        "description": "屏蔽重试失败提示并发送给管理员",
+        "type": "bool",
+        "hint": "开启后，重试失败生成的提示不再发送给用户，而是仅发送给管理员。",
+        "default": false
+    },
+    "auto_switch_on_retry_fail": {
+        "description": "重试失败后自动切换Provider",
+        "type": "bool",
+        "hint": "开启后，当重试全部失败时会自动切换到指定的备用Provider",
+        "default": false
     },
     "switch_provider_id": {
         "description": "触发后切换到的Provider ID",
@@ -89,5 +123,35 @@
         "description": "切换后立即用新Provider重试并回复原始用户消息",
         "type": "bool",
         "default": true
+    },
+    "switch_notify_admin": {
+        "description": "临时切换服务提供商后是否通知管理员",
+        "type": "bool",
+        "hint": "开启后，每次关键词触发并完成切换都会向管理员私聊发送一条通知",
+        "default": false
+    },
+    "enable_completion_check": {
+        "description": "启用#结束#标记检测",
+        "type": "bool",
+        "hint": "开启后，如果AI回复中没有#结束#标记，将视为错误并触发处理。发送时会自动删除#结束#标记",
+        "default": false
+    },
+    "completion_check_retry_enable": {
+        "description": "缺少#结束#标记时是否启用重试",
+        "type": "bool",
+        "hint": "开启后，当检测到缺少#结束#标记时会先尝试重试。关闭时直接进入切换Provider或失败提示",
+        "default": false
+    },
+    "inject_completion_prompt": {
+        "description": "自动注入#结束#标记提示到人设",
+        "type": "bool",
+        "hint": "开启后会自动将#结束#标记的要求注入到AI人设中，无需手动修改人设",
+        "default": false
+    },
+    "completion_prompt_text": {
+        "description": "注入的#结束#标记提示内容",
+        "type": "string",
+        "hint": "自定义注入到人设中的提示内容",
+        "default": "你的回复结束必须在末尾加上#结束#，否则系统将会判定你的回复无效。这个要求十分重要!!!"
     }
 }
