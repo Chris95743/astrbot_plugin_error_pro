@@ -507,14 +507,6 @@ class ErrorFilter(Star):
 
     @filter.on_decorating_result()
     async def on_decorating_result(self, event: AstrMessageEvent):
-        # 检查是否已经处理过，防止重复处理
-        if hasattr(event, '_errorpro_main_processed'):
-            logger.debug("[ErrorPro] 主处理逻辑已处理过，跳过重复处理")
-            return
-        
-        # 标记已开始处理
-        event._errorpro_main_processed = True
-        
         result = event.get_result()
         message_str = None
 
@@ -676,9 +668,13 @@ class ErrorFilter(Star):
                 error_keywords = self.simple_retry.error_keywords if self.simple_retry else self.config.get('retry_error_keywords_list', [])
                 has_error_keywords = any(keyword in message_str.lower() for keyword in error_keywords)
             else:
-                # 如果重试功能已禁用，仍然需要检测错误关键词，但使用默认列表
-                default_error_keywords = ['请求失败', '错误类型', '错误信息', '调用失败', '处理失败', '描述失败', '获取模型列表失败']
-                has_error_keywords = any(keyword in message_str for keyword in default_error_keywords)
+                # If retry is disabled, still detect error keywords using config list merged with defaults
+                config_keywords = [str(k).strip().lower() for k in self.config.get('retry_error_keywords_list', []) if str(k).strip()]
+                default_error_keywords = ['请求失败', '错误类型', '错误信息', '调用失败', '处理失败', '描述失败', '获取模型列表失败',
+                                          'all chat models failed', 'connection error', 'apiconnectionerror',
+                                          'notfounderror', 'request failed', 'astrbot 请求失败']
+                combined_keywords = list(set(default_error_keywords + config_keywords))
+                has_error_keywords = any(keyword in message_str.lower() for keyword in combined_keywords)
                 
             if has_error_keywords:
                 # 尝试AI解释错误（如果启用）
